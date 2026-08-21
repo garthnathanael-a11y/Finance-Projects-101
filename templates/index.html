@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASDAQ-100 M&A Deals Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 NASDAQ-100 M&A Deals Tracker</h1>
+            <p class="subtitle">Merger Arbitrage | Distressed M&A | Hostile Takeovers | Spin-Offs | Consolidation Plays</p>
+            <div class="last-updated">
+                Last Updated: <span id="lastUpdated">Loading...</span>
+            </div>
+            <button onclick="triggerScan()" class="scan-btn">🔄 Scan Now</button>
+        </header>
+
+        <div id="alerts" class="alerts-section"></div>
+
+        <div class="deals-grid" id="dealsGrid">
+            <!-- Deals will be loaded here -->
+        </div>
+
+        <div id="dealModal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeModal()">&times;</span>
+                <h2 id="modalTicker"></h2>
+                <div class="strategy-badge" id="modalStrategy"></div>
+                <p class="reasoning" id="modalReasoning"></p>
+                <h3>📰 News Sources & Articles</h3>
+                <div id="modalSources" class="sources-list"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

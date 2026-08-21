@@ -1,0 +1,33 @@
+{
+  "deals": [
+    {
+      "ticker": "AAPL",
+      "title": "Apple agrees to acquire AI startup for $2B",
+      "url": "https://example.com/apple-acquisition",
+      "source": "Google News",
+      "date": "2024-08-20",
+      "strategy": "Merger Arbitrage",
+      "reasoning": "Deal announced with clear terms - suitable for merger arbitrage to capture spread between current price and deal price."
+    },
+    {
+      "ticker": "TSLA",
+      "title": "Hostile takeover bid for Tesla rejected by board",
+      "url": "https://example.com/tesla-hostile",
+      "source": "Yahoo Finance",
+      "date": "2024-08-19",
+      "strategy": "Hostile Takeover",
+      "reasoning": "Unsolicited bid or activist pressure - hostile takeover play with potential for premium increase."
+    },
+    {
+      "ticker": "GOOGL",
+      "title": "Alphabet announces spin-off of Waymo division",
+      "url": "https://example.com/googl-spinoff",
+      "source": "Finviz",
+      "date": "2024-08-18",
+      "strategy": "Spin-Off Investing",
+      "reasoning": "Corporate separation announced - spin-off investing opportunity as sum-of-parts value may exceed conglomerate discount."
+    }
+  ],
+  "last_updated": "2024-08-20T12:00:00",
+  "tickers_scanned": 99
+}

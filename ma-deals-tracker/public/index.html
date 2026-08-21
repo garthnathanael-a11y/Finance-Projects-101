@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NASDAQ100 M&A Deals Tracker</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #fff;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0;
+            border-bottom: 2px solid #0f3460;
+            margin-bottom: 40px;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            color: #e94560;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            color: #a0a0a0;
+            font-size: 1.1rem;
+        }
+
+        .last-updated {
+            background: rgba(233, 69, 96, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-top: 15px;
+            font-size: 0.9rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: #e94560;
+            margin-bottom: 5px;
+        }
+
+        .stat-card p {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: #e94560;
+        }
+
+        .deals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+            gap: 25px;
+        }
+
+        .deal-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .deal-card:hover {
+            transform: translateY(-5px);
+            border-color: #e94560;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+        }
+
+        .deal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .stock-symbol {
+            background: #e94560;
+            padding: 8px 15px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .deal-status {
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-announced { background: #4CAF50; }
+        .status-in-talks { background: #FF9800; }
+        .status-hostile { background: #f44336; }
+        .status-completed { background: #2196F3; }
+
+        .deal-title {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .deal-summary {
+            color: #a0a0a0;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .deal-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding: 10px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: #e94560;
+        }
+
+        .strategy-section {
+            background: rgba(233, 69, 96, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .strategy-name {
+            color: #e94560;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .strategy-reasoning {
+            font-size: 0.85rem;
+            color: #c0c0c0;
+            line-height: 1.5;
+        }
+
+        .sources-section {
+            margin-top: 15px;
+        }
+
+        .sources-title {
+            font-size: 0.85rem;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .source-link {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 12px;
+            border-radius: 5px;
+            margin: 5px 5px 5px 0;
+            color: #4fc3f7;
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: background 0.3s ease;
+        }
+
+        .source-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #1a1a2e;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 800px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            border: 2px solid #e94560;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: #e94560;
+        }
+
+        .modal-deal-detail {
+            margin-bottom: 30px;
+        }
+
+        .modal-sources-list {
+            margin-top: 20px;
+        }
+
+        .modal-source-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin-bottom: 10px;
+            transition: background 0.3s ease;
+        }
+
+        .modal-source-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .modal-source-item a {
+            color: #4fc3f7;
+            text-decoration: none;
+            font-size: 1rem;
+            flex: 1;
+        }
+
+        .modal-source-item a:hover {
+            text-decoration: underline;
+        }
+
+        .no-deals {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0a0a0;
+        }
+
+        .no-deals h2 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: #e94560;
+        }
+
+        @media (max-width: 768px) {
+            .deals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📊 NASDAQ100 M&A Deals Tracker</h1>
+            <p>Monitor merger & acquisition activities for trading strategies</p>
+            <div class="last-updated" id="lastUpdated">Last updated: --</div>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3 id="totalDeals">0</h3>
+                <p>Total Active Deals</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="mergerArb">0</h3>
+                <p>Merger Arbitrage</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="hostileTakeover">0</h3>
+                <p>Hostile Takeovers</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="spinOff">0</h3>
+                <p>Spin-Offs</p>
+            </div>
+            <div class="stat-card">
+                <h3 id="distressed">0</h3>
+                <p>Distressed M&A</p>
+            </div>
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">All Deals</button>
+            <button class="filter-btn" data-filter="Merger Arbitrage">Merger Arbitrage</button>
+            <button class="filter-btn" data-filter="Hostile Takeover Plays">Hostile Takeovers</button>
+            <button class="filter-btn" data-filter="Spin-Off Investing">Spin-Offs</button>
+            <button class="filter-btn" data-filter="Distressed M&A">Distressed M&A</button>
+            <button class="filter-btn" data-filter="Consolidation Plays">Consolidation</button>
+        </div>
+
+        <div class="deals-grid" id="dealsGrid">
+            <!-- Deals will be loaded here -->
+        </div>
+
+        <div class="no-deals" id="noDeals" style="display: none;">
+            <h2>No M&A Activity Detected</h2>
+            <p>Check back later or refresh the page for updates.</p>
+        </div>
+    </div>
+
+    <!-- Modal for deal details -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">&times;</button>
+            <div id="modalContent"></div>
+        </div>
+    </div>
+
+    <script>
+        let allDeals = [];
+        let currentFilter = 'all';
+
+        // Load deals from API
+        async function loadDeals() {
+            try {
+                const response = await fetch('/api/deals');
+                allDeals = await response.json();
+                updateStats();
+                renderDeals();
+                updateLastUpdated();
+            } catch (error) {
+                console.error('Error loading deals:', error);
+                document.getElementById('noDeals').style.display = 'block';
+            }
+        }
+
+        // Update statistics
+        function updateStats() {
+            document.getElementById('totalDeals').textContent = allDeals.length;
+            
+            const strategyCounts = {};
+            allDeals.forEach(deal => {
+                const strategy = deal.strategy || 'Other';
+                strategyCounts[strategy] = (strategyCounts[strategy] || 0) + 1;
+            });
+
+            document.getElementById('mergerArb').textContent = strategyCounts['Merger Arbitrage'] || 0;
+            document.getElementById('hostileTakeover').textContent = strategyCounts['Hostile Takeover Plays'] || 0;
+            document.getElementById('spinOff').textContent = strategyCounts['Spin-Off Investing'] || 0;
+            document.getElementById('distressed').textContent = strategyCounts['Distressed M&A'] || 0;
+        }
+
+        // Update last updated timestamp
+        function updateLastUpdated() {
+            const now = new Date();
+            const formatted = now.toLocaleString('en-US', {
+                weekday: 'short',
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+            document.getElementById('lastUpdated').textContent = `Last updated: ${formatted}`;
+        }
+
+        // Render deals based on filter
+        function renderDeals() {
+            const grid = document.getElementById('dealsGrid');
+            const noDeals = document.getElementById('noDeals');
+            
+            let filteredDeals = allDeals;
+            if (currentFilter !== 'all') {
+                filteredDeals = allDeals.filter(deal => 
+                    deal.strategy === currentFilter
+                );
+            }
+
+            if (filteredDeals.length === 0) {
+                grid.innerHTML = '';
+                noDeals.style.display = 'block';
+                return;
+            }
+
+            noDeals.style.display = 'none';
+            grid.innerHTML = filteredDeals.map(deal => `
+                <div class="deal-card" onclick="showDealDetails('${deal.symbol}')">
+                    <div class="deal-header">
+                        <span class="stock-symbol">${deal.symbol}</span>
+                        <span class="deal-status status-${deal.status.toLowerCase().replace(' ', '-')}">${deal.status}</span>
+                    </div>
+                    <h3 class="deal-title">${deal.companyName}</h3>
+                    <p class="deal-summary">${deal.title}</p>
+                    <div class="deal-info">
+                        <div class="info-item">
+                            <div class="info-label">Deal Value</div>
+                            <div class="info-value">${deal.dealValue}</div>
+                        </div>
+                        <div class="info-item">
+                            <div class="info-label">Announced</div>
+                            <div class="info-value">${new Date(deal.announcementDate).toLocaleDateString()}</div>
+                        </div>
+                    </div>
+                    <div class="strategy-section">
+                        <div class="strategy-name">🎯 ${deal.strategy}</div>
+                        <div class="strategy-reasoning">${deal.reasoning}</div>
+                    </div>
+                    <div class="sources-section">
+                        <div class="sources-title">📰 ${deal.sources?.length || 0} Sources Available - Click to View</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show deal details in modal
+        async function showDealDetails(symbol) {
+            try {
+                const response = await fetch(`/api/deals/${symbol}`);
+                const deal = await response.json();
+                
+                const modalContent = document.getElementById('modalContent');
+                modalContent.innerHTML = `
+                    <div class="modal-deal-detail">
+                        <div class="deal-header" style="margin-bottom: 20px;">
+                            <span class="stock-symbol" style="font-size: 1.5rem;">${deal.symbol}</span>
+                            <span class="deal-status status-${deal.status.toLowerCase().replace(' ', '-')}">${deal.status}</span>
+                        </div>
+                        
+                        <h2 style="color: #e94560; margin-bottom: 10px;">${deal.companyName}</h2>
+                        <h3 style="margin-bottom: 20px; color: #fff;">${deal.title}</h3>
+                        
+                        <p style="color: #c0c0c0; line-height: 1.8; margin-bottom: 25px;">${deal.summary}</p>
+                        
+                        <div class="deal-info" style="margin-bottom: 25px;">
+                            <div class="info-item">
+                                <div class="info-label">Deal Value</div>
+                                <div class="info-value" style="font-size: 1.3rem;">${deal.dealValue}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Announcement Date</div>
+                                <div class="info-value" style="font-size: 1.3rem;">${new Date(deal.announcementDate).toLocaleDateString()}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">Status</div>
+                                <div class="info-value" style="font-size: 1.3rem;">${deal.status}</div>
+                            </div>
+                        </div>
+                        
+                        <div class="strategy-section" style="margin-bottom: 25px;">
+                            <div class="strategy-name" style="font-size: 1.2rem; margin-bottom: 15px;">🎯 Recommended Strategy: ${deal.strategy}</div>
+                            <div class="strategy-reasoning" style="font-size: 1rem; line-height: 1.8;">${deal.reasoning}</div>
+                        </div>
+                        
+                        <div class="modal-sources-list">
+                            <h3 style="color: #e94560; margin-bottom: 15px;">📰 News Sources & Articles</h3>
+                            ${deal.sources.map(source => `
+                                <div class="modal-source-item">
+                                    <span style="color: #a0a0a0; margin-right: 15px; min-width: 150px;">${source.name}:</span>
+                                    <a href="${source.url}" target="_blank" rel="noopener noreferrer">${source.url}</a>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                document.getElementById('modalOverlay').classList.add('active');
+            } catch (error) {
+                console.error('Error loading deal details:', error);
+            }
+        }
+
+        // Close modal
+        function closeModal() {
+            document.getElementById('modalOverlay').classList.remove('active');
+        }
+
+        // Close modal when clicking outside
+        document.getElementById('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === document.getElementById('modalOverlay')) {
+                closeModal();
+            }
+        });
+
+        // Filter buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                currentFilter = btn.dataset.filter;
+                renderDeals();
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Initial load
+        loadDeals();
+
+        // Auto-refresh every 5 minutes
+        setInterval(loadDeals, 300000);
+    </script>
+</body>
+</html>

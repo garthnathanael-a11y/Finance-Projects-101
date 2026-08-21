@@ -1,0 +1,120 @@
+[
+  {
+    "symbol": "AAPL",
+    "companyName": "Apple Inc.",
+    "title": "Apple Acquires AI Startup for $2 Billion",
+    "summary": "Apple announced the acquisition of an artificial intelligence startup to enhance its machine learning capabilities across its product lineup.",
+    "dealValue": "$2.0B",
+    "announcementDate": "2026-08-20T00:16:47.186Z",
+    "status": "Announced",
+    "sources": [
+      {
+        "name": "Reuters",
+        "url": "https://www.reuters.com/technology/apple-acquires-ai-startup"
+      },
+      {
+        "name": "Bloomberg",
+        "url": "https://www.bloomberg.com/news/apple-ai-acquisition"
+      },
+      {
+        "name": "CNBC",
+        "url": "https://www.cnbc.com/apple-acquisition-news"
+      }
+    ],
+    "strategy": "Merger Arbitrage",
+    "reasoning": "Standard announced M&A deal. Profit from the spread between current market price and acquisition price. Monitor regulatory approval risks and deal completion timeline.",
+    "lastUpdated": "2026-08-20T00:16:47.186Z"
+  },
+  {
+    "symbol": "NVDA",
+    "companyName": "NVIDIA Corporation",
+    "title": "NVIDIA in Talks to Acquire Semiconductor Competitor",
+    "summary": "NVIDIA is reportedly in advanced discussions to acquire a rival semiconductor company in a deal valued at over $10 billion, marking a major consolidation in the chip industry.",
+    "dealValue": "$10.5B",
+    "announcementDate": "2026-08-19T00:16:47.186Z",
+    "status": "In Talks",
+    "sources": [
+      {
+        "name": "Wall Street Journal",
+        "url": "https://www.wsj.com/nvidia-acquisition-talks"
+      },
+      {
+        "name": "Financial Times",
+        "url": "https://www.ft.com/nvidia-semiconductor-deal"
+      }
+    ],
+    "strategy": "Consolidation Plays",
+    "reasoning": "Industry consolidation trend. Multiple players merging to achieve scale efficiencies. Look for remaining targets in the sector that may be acquired next.",
+    "lastUpdated": "2026-08-20T00:16:47.186Z"
+  },
+  {
+    "symbol": "TSLA",
+    "companyName": "Tesla Inc.",
+    "title": "Tesla Faces Hostile Takeover Attempt by Investment Group",
+    "summary": "A consortium of investors has made an unsolicited bid to acquire Tesla, facing resistance from current management. The hostile takeover attempt values the company at a significant premium.",
+    "dealValue": "$180B",
+    "announcementDate": "2026-08-18T00:16:47.186Z",
+    "status": "Hostile Bid",
+    "sources": [
+      {
+        "name": "Bloomberg",
+        "url": "https://www.bloomberg.com/tesla-hostile-takeover"
+      },
+      {
+        "name": "Reuters",
+        "url": "https://www.reuters.com/tesla-unsolicited-bid"
+      },
+      {
+        "name": "MarketWatch",
+        "url": "https://www.marketwatch.com/tesla-takeover-attempt"
+      }
+    ],
+    "strategy": "Hostile Takeover Plays",
+    "reasoning": "Unsolicited bid or resistance from target company management indicates a hostile takeover attempt. Consider shorting the acquirer or going long on the target if you believe the deal will close at a higher price.",
+    "lastUpdated": "2026-08-20T00:16:47.186Z"
+  },
+  {
+    "symbol": "META",
+    "companyName": "Meta Platforms Inc.",
+    "title": "Meta to Spin Off VR Division into Separate Company",
+    "summary": "Meta announced plans to spin off its Virtual Reality division into an independent publicly traded company, allowing investors to value the VR business separately.",
+    "dealValue": "N/A",
+    "announcementDate": "2026-08-17T00:16:47.186Z",
+    "status": "Announced",
+    "sources": [
+      {
+        "name": "TechCrunch",
+        "url": "https://techcrunch.com/meta-vr-spinoff"
+      },
+      {
+        "name": "The Verge",
+        "url": "https://www.theverge.com/meta-spinoff-news"
+      }
+    ],
+    "strategy": "Spin-Off Investing",
+    "reasoning": "Company is separating a business unit. Spin-offs often outperform as they unlock hidden value, reduce conglomerate discount, and allow focused management. Consider investing in both parent and spin-off entity.",
+    "lastUpdated": "2026-08-20T00:16:47.186Z"
+  },
+  {
+    "symbol": "AMZN",
+    "companyName": "Amazon.com Inc.",
+    "title": "Amazon Acquires Healthcare Company in Distressed Sale",
+    "summary": "Amazon purchased a struggling healthcare technology company out of bankruptcy proceedings at a discounted valuation, expanding its healthcare footprint.",
+    "dealValue": "$1.2B",
+    "announcementDate": "2026-08-16T00:16:47.186Z",
+    "status": "Completed",
+    "sources": [
+      {
+        "name": "Healthcare Dive",
+        "url": "https://www.healthcaredive.com/amazon-distressed-acquisition"
+      },
+      {
+        "name": "Modern Healthcare",
+        "url": "https://www.modernhealthcare.com/amazon-bankruptcy-purchase"
+      }
+    ],
+    "strategy": "Distressed M&A",
+    "reasoning": "Target company is in financial distress. These deals often involve significant discounts and complex capital structures. High risk but potential for substantial returns if restructuring succeeds.",
+    "lastUpdated": "2026-08-20T00:16:47.186Z"
+  }
+]
